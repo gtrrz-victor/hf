@@ -1,6 +1,6 @@
 # Hello fresh code challenge
 
-## How to run backend
+## How to run back-end
 
 ```
 #cd back-end
@@ -19,6 +19,6 @@ You can run it locally by:
 
 Otherwise, you can enjoy the lastest version deployed by Github actions, on [https://gtrrz-victor.github.io/hf](https://gtrrz-victor.github.io/hf)
 
-# Solition Design
+# Solution Design
 
 You can find the app design [here](./design.md)
