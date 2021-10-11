@@ -1,16 +1,16 @@
 <template>
-  <weekly-menu />
+  <recipes-manager />
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import WeeklyMenu from "../components/WeeklyMenu.vue";
+import RecipesManager from "../components/Recipes.vue";
 
 export default Vue.extend({
-  name: "Home",
+  name: "Recipes",
 
   components: {
-    WeeklyMenu,
+    RecipesManager,
   },
 });
 </script>

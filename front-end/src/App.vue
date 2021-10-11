@@ -1,40 +1,24 @@
 <template>
   <v-app>
-    <v-app-bar app color="primary" dark>
+    <v-app-bar app color="primary">
       <div class="d-flex align-center">
-        <router-link to="/">
-          <v-img
-            alt="Vuetify Logo"
-            class="shrink mr-2"
-            contain
-            src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
-            transition="scale-transition"
-            width="40"
-          />
-        </router-link>
         <v-img
           alt="Vuetify Name"
           class="shrink mt-1 hidden-sm-and-down"
           contain
           min-width="100"
-          src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
+          src="https://img.hellofresh.com/image/upload/c_scale,f_auto,q_100,w_435/v1600959926/Hello_Fresh_Lockup.png"
           width="100"
         />
       </div>
 
       <v-spacer></v-spacer>
 
-      <v-btn to="/about" text>
-        <span class="mr-2">About</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn to="/recipes" text>
+        <span class="mr-2">Recipes</span>
       </v-btn>
-      <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-        text
-      >
-        <span class="mr-2">Latest Release</span>
-        <v-icon>mdi-open-in-new</v-icon>
+      <v-btn to="/" text>
+        <span class="mr-2">Weekly Menu</span>
       </v-btn>
     </v-app-bar>
 
