@@ -1,0 +1,469 @@
+{
+	"info": {
+		"_postman_id": "134fe23c-f3a5-42a0-9339-4b647b47f84c",
+		"name": "Hello Fresh",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Recipes",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\n        \"difficulty\": \"Easy\",\n        \"description\": \"\",\n        \"image\": \"\",\n        \"title\": \"Veamos!\",\n        \"subtitle\": \"\",\n        \"cook_time\": 0,\n        \"tags\": [\n            \"1\"\n        ],\n        \"utensils\": null,\n        \"allergens\": [\n            \"a\",\n            \"b\"\n        ]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\n        \"difficulty\": \"Easy\",\n        \"description\": \"\",\n        \"image\": \"\",\n        \"title\": \"\",\n        \"subtitle\": \"\",\n        \"cook_time\": 0,\n        \"tags\": [\n            \"1\"\n        ],\n        \"utensils\": [\"cuchara\"],\n        \"allergens\": [\n            \"a\",\n            \"b\"\n        ]\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/recipes/13",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/recipes/12",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"recipes",
+								"12"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "WeeklyMenu",
+			"item": [
+				{
+					"name": "List",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numPeople\":2,\n    \"daysPerWeek\":3,\n    \"firstDayWeek\":\"2021-10-11\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numPeople\":2,\n    \"daysPerWeek\":4,\n    \"firstDayWeek\":\"2021-10-18\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus/2",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List Week Recipes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus/2/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus",
+								"2",
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Week Recipes",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[1,5]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus/2/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus",
+								"2",
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patch Week Recipes",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[1,2]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus/2/recipes",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus",
+								"2",
+								"recipes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create invalid num people",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"pm.test(\"Message is 'numPeople field must be 2 or 4'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status_text).to.eql(\"Bad request\");",
+									"    pm.expect(jsonData.message).to.eql( \"numPeople field must be 2 or 4\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numPeople\":3,\n    \"daysPerWeek\":3,\n    \"firstDayWeek\":\"2021-10-11\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create invalid num recipes",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Message is 'daysPerWeek field must be 3, 4 or 5'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status_text).to.eql(\"Bad request\");",
+									"    pm.expect(jsonData.message).to.eql( \"daysPerWeek field must be 3, 4 or 5\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numPeople\":2,\n    \"daysPerWeek\":6,\n    \"firstDayWeek\":\"2021-10-11\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create invalid first day week",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"",
+									"pm.test(\"Message is 'invalid time 2021-10-21, first day week must be Monday'\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status_text).to.eql(\"Bad request\");",
+									"    pm.expect(jsonData.message).to.eql( \"invalid time 2021-10-21, first day week must be Monday\");",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"numPeople\":1,\n    \"daysPerWeek\":3,\n    \"firstDayWeek\":\"2021-10-21\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/weeklyMenus",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"weeklyMenus"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

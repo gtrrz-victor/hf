@@ -7,7 +7,7 @@ import (
 	"github.com/lib/pq"
 )
 
-const recipeTableName = "recipe"
+const RecipeTableName = "recipe"
 
 var recipeSchema = fmt.Sprintf(`
 CREATE TABLE %s (
@@ -21,7 +21,7 @@ CREATE TABLE %s (
 	tags text[],
 	utensils text[],
 	allergens text[]
-);`, recipeTableName)
+);`, RecipeTableName)
 
 type Recipe struct {
 	Id          int            `db:"id"`
@@ -37,7 +37,7 @@ type Recipe struct {
 }
 
 func CreateRecipeTable(db *sqlx.DB) {
-	if !isTableCreated(db, recipeTableName) {
+	if !isTableCreated(db, RecipeTableName) {
 		db.MustExec(recipeSchema)
 	}
 }
@@ -47,7 +47,7 @@ func (r *Recipe) Insert(db *sqlx.DB) (err error) {
 	if err = tx.QueryRowx(fmt.Sprintf(`
 		INSERT INTO %s (difficulty, tags, allergens, cook_time, utensils, description, image, title, subtitle) 
 		VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) 
-		RETURNING id`, recipeTableName),
+		RETURNING id`, RecipeTableName),
 		r.Difficulty, r.Tags, r.Allergens, r.CookTime, r.Utensils, r.Description, r.Image, r.Title, r.Substitle).Scan(&r.Id); err != nil {
 		tx.Rollback()
 		return
@@ -60,16 +60,23 @@ func (r *Recipe) Update(db *sqlx.DB) error {
 	sqlStatement := fmt.Sprintf(`
 	UPDATE %s
 	SET difficulty = $2, tags = $3, allergens= $4, cook_time = $5, utensils = $6, description = $7, image= $8,title= $9,subtitle = $10
-	WHERE id = $1;`, recipeTableName)
+	WHERE id = $1;`, RecipeTableName)
 	_, err := db.Exec(sqlStatement, r.Id, r.Difficulty, r.Tags, r.Allergens, r.CookTime, r.Utensils, r.Description, r.Image, r.Title, r.Substitle)
 	return err
 }
 
-func (r *Recipe) Delete(db *sqlx.DB) error {
-	res, err := db.Exec(fmt.Sprintf("DELETE FROM %s WHERE id=$1", recipeTableName), r.Id)
+func (r *Recipe) Delete(db *sqlx.DB) (bool, error) {
+	res, err := db.Exec(fmt.Sprintf("DELETE FROM %s WHERE id=$1", RecipeTableName), r.Id)
 	if err != nil {
-		return err
+		return false, err
 	}
-	_, err = res.RowsAffected()
-	return err
+	rowsDeleted, err := res.RowsAffected()
+	if err != nil {
+		return false, err
+	}
+	if rowsDeleted == 0 {
+		return false, err
+	}
+	return true, err
+
 }

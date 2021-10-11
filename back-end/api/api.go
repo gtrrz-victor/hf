@@ -1,15 +1,20 @@
 package api
 
 import (
+	"hello-fresh/database"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi"
 	"github.com/go-chi/chi/middleware"
 	"github.com/go-chi/cors"
+	"github.com/go-chi/render"
 )
 
-func StartServer() {
+var dbInstance database.Conn
+
+func NewHandler(db database.Conn) http.Handler {
+	dbInstance = db
 	r := chi.NewRouter()
 	// A good base middleware stack
 	r.Use(middleware.RequestID)
@@ -34,9 +39,20 @@ func StartServer() {
 		AllowCredentials: false,
 		MaxAge:           300, // Maximum value not ignored by any of major browsers
 	}))
+	r.MethodNotAllowed(methodNotAllowedHandler)
+	r.NotFound(notFoundHandler)
+	addRecipesRoutes(r)
+	addWeeklyMenuRoutes(r)
+	return r
+}
 
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
-	})
-	http.ListenAndServe(":3000", r)
+func methodNotAllowedHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "application/json")
+	w.WriteHeader(405)
+	render.Render(w, r, ErrMethodNotAllowed)
+}
+func notFoundHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type", "application/json")
+	w.WriteHeader(400)
+	render.Render(w, r, ErrNotFound)
 }
