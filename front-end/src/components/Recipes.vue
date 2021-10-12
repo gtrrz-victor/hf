@@ -16,8 +16,10 @@
               <v-btn class="mb-2" @click="dialog = true"> New Recipe </v-btn>
               <create-recipe
                 :dialog="dialog"
+                :itemToUpdate="itemToUpdate"
                 @close-dialog="close"
                 @item-created="getData"
+                @item-updated="getData"
               >
               </create-recipe>
               <v-dialog
@@ -67,6 +69,7 @@ export default Vue.extend({
   },
   methods: {
     editItem(item: any) {
+      this.itemToUpdate = item
       this.dialog = true;
     },
 
@@ -92,6 +95,7 @@ export default Vue.extend({
 
     close() {
       this.dialog = false;
+      this.itemToUpdate = undefined
     },
 
     closeDelete() {
@@ -111,6 +115,7 @@ export default Vue.extend({
     this.getData();
   },
   data: () => ({
+    itemToUpdate:undefined,
     idToRemove: undefined,
     disabledDialogDelete: false,
     dialogDelete: false,
