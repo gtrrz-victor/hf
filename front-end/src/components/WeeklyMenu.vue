@@ -13,9 +13,7 @@
               <v-toolbar-title>Weekly Menu CRUD</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn class="mb-2" @click="dialog=true">
-                New Menu
-              </v-btn>
+              <v-btn class="mb-2" @click="dialog = true"> New Menu </v-btn>
               <create-weekly-menu
                 :itemToUpdate="itemToUpdate"
                 :dialog="dialog"
@@ -46,9 +44,53 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <v-dialog
+                v-model="dialogAddRecipes"
+                persistent
+                :disabled="disabledDialogAddRecipes"
+                max-width="500px"
+              >
+                <v-card>
+                  <v-card-title class="text-h5"
+                    >Add/Remove recipes</v-card-title
+                  >
+                  <v-card-text>
+                    <v-container>
+                      <v-row>
+                        <v-col cols="12" sm="6" md="6">
+                          <v-combobox
+                            multiple
+                            v-model="selectedWeek.recipesMenu"
+                            label="Recipe Ids"
+                            append-icon
+                            chips
+                            deletable-chips
+                            class="tag-input"
+                          >
+                          </v-combobox>
+                        </v-col>
+                      </v-row>
+                    </v-container>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="closeAddRecipes"
+                      >Cancel</v-btn
+                    >
+                    <v-btn color="blue darken-1" text @click="updateRecipes"
+                      >Edit</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-toolbar>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
+            <v-icon small class="mr-2" @click="loadMenuRecipes(item)">
+              mdi-plus-box-multiple
+            </v-icon>
             <v-icon small class="mr-2" @click="editItem(item)">
               mdi-pencil
             </v-icon>
@@ -57,6 +99,9 @@
         >
       </v-col>
     </v-row>
+    <v-snackbar v-model="snackbar">
+      {{ apiError }}
+    </v-snackbar>
   </v-container>
 </template>
 
@@ -70,9 +115,46 @@ export default Vue.extend({
     CreateWeeklyMenu,
   },
   methods: {
+    closeAddRecipes() {
+      this.selectedWeek = {
+        recipesMenu: [],
+        id: "",
+      };
+      this.dialogAddRecipes = false;
+    },
+    async loadMenuRecipes(item: any) {
+      try {
+        const { data } = await (this as any).$http.get(
+          `/weeklyMenus/${item.id}/recipes`
+        );
+        this.selectedWeek = {
+          recipesMenu: data.map((recipe: any) => recipe.id),
+          id: item.id,
+        };
+        this.dialogAddRecipes = true;
+      } catch (err) {
+        this.apiError = err;
+        this.snackbar = true;
+      }
+    },
+    async updateRecipes() {
+      try {
+        this.disabledDialogAddRecipes = true;
+        const { data } = await (this as any).$http.put(
+          `/weeklyMenus/${this.selectedWeek.id}/recipes`,
+          this.selectedWeek.recipesMenu
+        );
+        this.closeAddRecipes();
+      } catch (err) {
+        this.apiError = err;
+        this.snackbar = true;
+      } finally {
+        this.disabledDialogAddRecipes = false;
+      }
+    },
     editItem(item: any) {
       this.dialog = true;
-      this.itemToUpdate = item
+      this.itemToUpdate = item;
     },
 
     deleteItem(item: any) {
@@ -93,10 +175,9 @@ export default Vue.extend({
         this.disabledDialogDelete = false;
       }
     },
-
     close() {
       this.dialog = false;
-      this.itemToUpdate = undefined
+      this.itemToUpdate = undefined;
     },
 
     closeDelete() {
@@ -116,11 +197,19 @@ export default Vue.extend({
     this.getData();
   },
   data: () => ({
-    itemToUpdate:undefined,
+    snackbar: false,
+    apiError: "",
+    dialogAddRecipes: false,
+    disabledDialogAddRecipes: false,
+    itemToUpdate: undefined,
     idToRemove: undefined,
     disabledDialogDelete: false,
     dialogDelete: false,
     dialog: false,
+    selectedWeek: {
+      recipesMenu: [],
+      id: "",
+    },
     headers: [
       {
         text: "Menu Id",
