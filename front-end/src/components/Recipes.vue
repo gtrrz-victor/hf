@@ -9,7 +9,7 @@
           class="elevation-1"
         >
           <template v-slot:top>
-            <v-toolbar flat>
+            <v-toolbar flat v-if="!isFilterEnabled">
               <v-toolbar-title>Recipes CRUD</v-toolbar-title>
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
@@ -64,12 +64,25 @@ import CreateRecipe from "./CreateRecipe.vue";
 
 export default Vue.extend({
   name: "Recipes",
+  props: {
+    menuID: Number,
+  },
   components: {
     CreateRecipe,
   },
+  computed: {
+    isFilterEnabled(): boolean {
+      return this.menuID !== undefined;
+    },
+  },
+  watch: {
+    menuID() {
+      this.getData();
+    },
+  },
   methods: {
     editItem(item: any) {
-      this.itemToUpdate = item
+      this.itemToUpdate = item;
       this.dialog = true;
     },
 
@@ -95,7 +108,7 @@ export default Vue.extend({
 
     close() {
       this.dialog = false;
-      this.itemToUpdate = undefined
+      this.itemToUpdate = undefined;
     },
 
     closeDelete() {
@@ -104,8 +117,19 @@ export default Vue.extend({
 
     async getData() {
       try {
-        const response = await (this as any).$http.get("/recipes");
-        this.recipes = response.data;
+        let response;
+        if (this.isFilterEnabled) {
+          response = await (this as any).$http.get(
+            `weeklyMenus/${this.menuID}/recipes`
+          );
+        } else {
+          response = await (this as any).$http.get("/recipes");
+        }
+        if (response.status === 204) {
+          this.recipes = [];
+        } else {
+          this.recipes = response.data;
+        }
       } catch (error) {
         console.log(error);
       }
@@ -115,7 +139,7 @@ export default Vue.extend({
     this.getData();
   },
   data: () => ({
-    itemToUpdate:undefined,
+    itemToUpdate: undefined,
     idToRemove: undefined,
     disabledDialogDelete: false,
     dialogDelete: false,

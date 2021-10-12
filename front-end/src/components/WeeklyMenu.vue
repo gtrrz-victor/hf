@@ -85,9 +85,33 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <v-dialog
+                v-model="dialogListRecipes"
+                persistent
+              >
+                <v-card>
+                  <v-card-title class="text-h5"
+                    >Recipes of Menu ID: {{weeklyMenuRecipesToList}}</v-card-title
+                  >
+                  <v-card-text>
+                    <recipes :menuID="weeklyMenuRecipesToList"></recipes>
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="blue darken-1" text @click="dialogListRecipes=false"
+                      >Close</v-btn
+                    >
+                    <v-spacer></v-spacer>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
             </v-toolbar>
           </template>
           <template v-slot:[`item.actions`]="{ item }">
+            <v-icon small class="mr-2" @click="listRecipes(item)">
+              mdi-file-find-outline
+            </v-icon>
             <v-icon small class="mr-2" @click="loadMenuRecipes(item)">
               mdi-plus-box-multiple
             </v-icon>
@@ -108,11 +132,13 @@
 <script lang="ts">
 import Vue from "vue";
 import CreateWeeklyMenu from "./CreateWeeklyMenu.vue";
+import Recipes from "./Recipes.vue";
 
 export default Vue.extend({
   name: "WeeklyMenu",
   components: {
     CreateWeeklyMenu,
+    Recipes
   },
   methods: {
     closeAddRecipes() {
@@ -142,7 +168,7 @@ export default Vue.extend({
         this.disabledDialogAddRecipes = true;
         const { data } = await (this as any).$http.put(
           `/weeklyMenus/${this.selectedWeek.id}/recipes`,
-          this.selectedWeek.recipesMenu
+          this.selectedWeek.recipesMenu.map((id)=>parseInt(id))
         );
         this.closeAddRecipes();
       } catch (err) {
@@ -155,6 +181,10 @@ export default Vue.extend({
     editItem(item: any) {
       this.dialog = true;
       this.itemToUpdate = item;
+    },
+    listRecipes(item: any) {
+      this.dialogListRecipes = true;
+      this.weeklyMenuRecipesToList = item.id;
     },
 
     deleteItem(item: any) {
@@ -199,6 +229,8 @@ export default Vue.extend({
   data: () => ({
     snackbar: false,
     apiError: "",
+    weeklyMenuRecipesToList: "",
+    dialogListRecipes: false,
     dialogAddRecipes: false,
     disabledDialogAddRecipes: false,
     itemToUpdate: undefined,
