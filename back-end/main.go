@@ -20,7 +20,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error occurred: %s", err.Error())
 	}
-	conn := database.Connection()
+	conn := database.Initialize()
 	defer conn.DB.Close()
 	httpHandler := api.NewHandler(conn)
 

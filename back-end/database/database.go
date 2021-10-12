@@ -10,26 +10,28 @@ import (
 	_ "github.com/lib/pq"
 )
 
+const (
+	HOST = "database"
+	PORT = 5432
+)
+
 var connection Conn
 
 type Conn struct {
 	DB *sqlx.DB
 }
 
-func init() {
+func Initialize() Conn {
 	connection = Conn{}
 	var err error
 	dbUser, dbPassword, dbName :=
 		os.Getenv("POSTGRES_USER"),
 		os.Getenv("POSTGRES_PASSWORD"),
 		os.Getenv("POSTGRES_DB")
-	config := Config{
-		User:     dbUser,
-		Password: dbPassword,
-		SSLMode:  "disable",
-		DBName:   dbName,
-	}
-	connection.DB, err = sqlx.Connect("postgres", config.ConnectionString())
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable",
+		HOST, PORT, dbUser, dbPassword, dbName)
+
+	connection.DB, err = sqlx.Open("postgres", dsn)
 	if err != nil {
 		panic(err)
 	}
@@ -41,9 +43,6 @@ func init() {
 	model.CreateRecipeTable(connection.DB)
 	model.CreateWeeklyMenuTable(connection.DB)
 	model.CreateRecipesMenuTable(connection.DB)
-}
-
-func Connection() Conn {
 	return connection
 }
 
