@@ -15,7 +15,7 @@
               </v-col>
             </v-row>
             <v-row justify="space-around" class="pt-5">
-              <v-col cols="5" sm="5" md="5">
+              <v-col cols="12" sm="12" md="12">
                 <GoogleLogin
                   :params="params"
                   :onSuccess="onSuccess"
