@@ -11,9 +11,9 @@
           width="100"
         />
       </div>
-
       <v-spacer></v-spacer>
-
+      <v-toolbar-title v-if="!!userName()">Welcome {{ userName() }}</v-toolbar-title>
+      <v-spacer></v-spacer>
       <v-btn to="/recipes" text>
         <span class="mr-2">Recipes</span>
       </v-btn>
@@ -33,9 +33,12 @@ import Vue from "vue";
 
 export default Vue.extend({
   name: "App",
-
-  data: () => ({
-    //
-  }),
+  methods: {
+    userName() {
+      const cookie = this.$cookies.get("user");
+      if (!cookie) return undefined;
+      return cookie.it.Se;
+    },
+  },
 });
 </script>
