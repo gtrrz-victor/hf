@@ -37,7 +37,7 @@ export default Vue.extend({
     userName() {
       const cookie = this.$cookies.get("user");
       if (!cookie) return undefined;
-      return cookie.it.Se;
+      return (!cookie.it?cookie.dt:cookie.it).Se;
     },
   },
 });
