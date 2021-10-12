@@ -7,7 +7,7 @@
   >
     <v-card color="rgb(210, 248, 149)">
       <v-card-title>
-        <span class="text-h5">New Menu</span>
+        <span class="text-h5">{{ isEditMode ? "Edit Menu" : "New Menu" }}</span>
       </v-card-title>
 
       <v-card-text>
@@ -50,8 +50,23 @@
       <v-card-actions>
         <v-spacer></v-spacer>
         <v-btn color="blue darken-1" text @click="close"> Cancel </v-btn>
-        <v-btn color="blue darken-1" text @click="save" :disabled="!isValid">
-          Save
+        <v-btn
+          v-if="!isEditMode"
+          color="blue darken-1"
+          text
+          @click="save"
+          :disabled="!isValid"
+        >
+          Create
+        </v-btn>
+        <v-btn
+          v-else
+          color="blue darken-1"
+          text
+          @click="edit"
+          :disabled="!isValid"
+        >
+          Edit
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -66,17 +81,51 @@
 import Vue from "vue";
 import moment from "moment";
 
+const weeklyMenuBase = {
+      numPeople: 2,
+      recipesPerWeek: 3,
+      firstDayWeek: undefined,
+    }
+
 export default Vue.extend({
   name: "CreateWeeklyMenu",
   props: {
     dialog: Boolean,
-    itemToUpdate: Object
+    itemToUpdate: Object,
+  },
+  watch: {
+    itemToUpdate(val) {
+      if (val !== undefined) {
+        this.weeklyMenu = {
+          numPeople: val.numPeople,
+          recipesPerWeek: val.daysPerWeek,
+          firstDayWeek: val.firstDayWeek,
+        };
+      }
+    },
   },
   methods: {
     close() {
       this.$emit("close-dialog");
     },
-
+    async edit() {
+      try {
+        this.disabledDialog = true;
+        await (this as any).$http.put(`/weeklyMenus/${this.itemToUpdate.id}`, {
+          numPeople: this.weeklyMenu.numPeople,
+          daysPerWeek: this.weeklyMenu.recipesPerWeek,
+          firstDayWeek: this.weeklyMenu.firstDayWeek,
+        });
+        this.$emit("item-updated");
+        this.weeklyMenu = {...weeklyMenuBase}
+        this.close();
+      } catch (error) {
+        this.apiError = error;
+        this.snackbar = true;
+      } finally {
+        this.disabledDialog = false;
+      }
+    },
     async save() {
       try {
         this.disabledDialog = true;
@@ -86,10 +135,11 @@ export default Vue.extend({
           firstDayWeek: this.weeklyMenu.firstDayWeek,
         });
         this.$emit("item-created");
+        this.weeklyMenu = {...weeklyMenuBase}
         this.close();
       } catch (error) {
-        this.apiError = error
-        this.snackbar = true
+        this.apiError = error;
+        this.snackbar = true;
       } finally {
         this.disabledDialog = false;
       }
@@ -104,16 +154,17 @@ export default Vue.extend({
         this.weeklyMenu.firstDayWeek !== undefined
       );
     },
+    isEditMode() {
+      return this.itemToUpdate !== undefined;
+    },
   },
   data: () => ({
     apiError: "",
     snackbar: false,
     disabledDialog: false,
     weeklyMenu: {
-      numPeople: 2,
-      recipesPerWeek: 3,
-      firstDayWeek: undefined,
-    },
+      ...weeklyMenuBase
+    }
   }),
 });
 </script>

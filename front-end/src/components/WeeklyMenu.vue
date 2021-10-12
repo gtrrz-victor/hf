@@ -17,9 +17,11 @@
                 New Menu
               </v-btn>
               <create-weekly-menu
+                :itemToUpdate="itemToUpdate"
                 :dialog="dialog"
                 @close-dialog="close"
                 @item-created="getData"
+                @item-updated="getData"
               >
               </create-weekly-menu>
               <v-dialog
@@ -70,6 +72,7 @@ export default Vue.extend({
   methods: {
     editItem(item: any) {
       this.dialog = true;
+      this.itemToUpdate = item
     },
 
     deleteItem(item: any) {
@@ -93,6 +96,7 @@ export default Vue.extend({
 
     close() {
       this.dialog = false;
+      this.itemToUpdate = undefined
     },
 
     closeDelete() {
@@ -112,6 +116,7 @@ export default Vue.extend({
     this.getData();
   },
   data: () => ({
+    itemToUpdate:undefined,
     idToRemove: undefined,
     disabledDialogDelete: false,
     dialogDelete: false,
