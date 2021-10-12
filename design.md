@@ -28,6 +28,16 @@
 
 ## Room to improve
 
+### Backend
+
 * Adding postman tests. I'm not familiarized with it, I have just added 3 tests to check the correct payload format creating a new weeklyMenu.
-* Adding Google JWT authentication (either on front-end and back-end)
-* Adding the missing Recipe fields, like ingredients, stepByStep,nutritionalInfo, scoring system
+* Adding Google JWT authentication back-end.
+* Adding the missing Recipe fields, like ingredients, stepByStep, nutritionalInfo, scoring system.
+* HTTPS instead of HTTP. Because it is serve under HTTP, the frontend application deployed on github pages ( it is https ) doesn't allow the app execute request to unsecure endpoints. 
+
+
+### Frontend
+
+* Adding the scoring feature for recipes and weekly plan.
+* Adding e2e testing with Cypress. It is giving me an error when it is trying to connect with google chrome...
+* Improving the dialog where you can add recipes to an existing weekly plan. Now it doesn't help you at all with which recipes you can add. You should know beforehand the recipe identifier. 
